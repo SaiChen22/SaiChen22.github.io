@@ -65,6 +65,58 @@
       return candidates.filter((_, i) => i % skip === 0);
     }
 
+    const BIO_TEXT =
+`SAI KAUNG SAN
+--------------------------------
+CS @ Baruch College  NYC  GPA 3.838
+Python  TypeScript  Next.js  React  ML
+
+[PROJECTS]
+> Clinical Data Reconciliation Engine
+> CoinPulse
+
+[AWARD]
+> Google x BASTA Innovation - Winner
+
+> github.com/SaiChen22
+> linkedin.com/in/sai-kaung-san
+> saikaungsanchen@gmail.com`;
+
+    // Uses Pretext layoutWithLines to wrap BIO_TEXT at the canvas width,
+    // then maps every character to a precise (x, y) pixel coordinate.
+    function buildBioTargets(W, H) {
+      const FONT_SIZE = Math.max(11, Math.min(15, Math.floor(W / 90)));
+      const FONT = `${FONT_SIZE}px 'Courier New', monospace`;
+      const LINE_HEIGHT = Math.floor(FONT_SIZE * 1.6);
+      const PADDING = Math.floor(W * 0.08);
+      const maxWidth = W - 2 * PADDING;
+
+      // Measure monospace char width once using canvas (all chars same width)
+      const oc = document.createElement('canvas');
+      const octx = oc.getContext('2d');
+      octx.font = FONT;
+      const charWidth = octx.measureText('M').width;
+
+      const prepared = prepare(BIO_TEXT, FONT);
+      const { lines, height } = layoutWithLines(prepared, maxWidth, LINE_HEIGHT);
+
+      const startY = Math.floor((H - height) / 2);
+      const targets = [];
+
+      lines.forEach((line, li) => {
+        const y = startY + li * LINE_HEIGHT;
+        for (let i = 0; i < line.text.length; i++) {
+          targets.push({
+            x: PADDING + i * charWidth,
+            y,
+            char: line.text[i],
+          });
+        }
+      });
+
+      return targets;
+    }
+
     function loop() {
       ctx.fillStyle = '#0d0d0d';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
