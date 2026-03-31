@@ -145,9 +145,25 @@ Python  TypeScript  Next.js  React  ML
     const bioTargets  = buildBioTargets(canvas.width, canvas.height);
     let particles = buildParticles(nameTargets, bioTargets, canvas.width, canvas.height);
 
+    function drawParticles(t) {
+      ctx.font = `${Math.max(11, Math.min(15, Math.floor(canvas.width / 90)))}px 'Courier New', monospace`;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      for (const p of particles) {
+        if (p.alpha < 0.01) continue;
+        const pulse = 0.65 + 0.35 * Math.sin(t * 0.0015 + p.phase);
+        const brightness = Math.round(p.alpha * pulse * 255);
+        ctx.fillStyle = `rgb(0,${brightness},${Math.round(brightness * 0.25)})`;
+        ctx.fillText(p.char, p.x, p.y);
+      }
+    }
+
+    let t = 0;
     function loop() {
+      t++;
       ctx.fillStyle = '#0d0d0d';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      drawParticles(t);
       requestAnimationFrame(loop);
     }
     loop();
