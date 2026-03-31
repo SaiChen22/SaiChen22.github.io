@@ -65,6 +65,10 @@
       return candidates.filter((_, i) => i % skip === 0);
     }
 
+    const S = { MATERIALIZING: 0, IDLE: 1, EXPLODING: 2, REFORMING: 3 };
+    let appState = S.MATERIALIZING;
+    let currentLayout = 'name';
+
     const BIO_TEXT =
 `SAI KAUNG SAN
 --------------------------------
@@ -116,6 +120,30 @@ Python  TypeScript  Next.js  React  ML
 
       return targets;
     }
+
+    // Creates one particle per slot (count = max of name and bio target lengths).
+    // Each particle holds targets for both states so it can smoothly switch.
+    function buildParticles(nameTargets, bioTargets, W, H) {
+      const count = Math.max(nameTargets.length, bioTargets.length);
+      return Array.from({ length: count }, (_, i) => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: 0, vy: 0,
+        nameX: nameTargets[i]?.x ?? -200,
+        nameY: nameTargets[i]?.y ?? -200,
+        nameChar: nameTargets[i]?.char ?? ' ',
+        bioX:  bioTargets[i]?.x  ?? -200,
+        bioY:  bioTargets[i]?.y  ?? -200,
+        bioChar:  bioTargets[i]?.char  ?? ' ',
+        char: nameTargets[i]?.char ?? ' ',
+        alpha: 0,
+        phase: Math.random() * Math.PI * 2,
+      }));
+    }
+
+    const nameTargets = buildNameTargets(canvas.width, canvas.height);
+    const bioTargets  = buildBioTargets(canvas.width, canvas.height);
+    let particles = buildParticles(nameTargets, bioTargets, canvas.width, canvas.height);
 
     function loop() {
       ctx.fillStyle = '#0d0d0d';
