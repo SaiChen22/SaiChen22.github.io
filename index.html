@@ -81,6 +81,7 @@
     const S = { MATERIALIZING: 0, IDLE: 1, EXPLODING: 2, REFORMING: 3 };
     let appState = S.MATERIALIZING;
     let currentLayout = 'name';
+    let explodeFrames = 0;
 
     const BIO_TEXT =
 `SAI KAUNG SAN
@@ -214,8 +215,9 @@ Python  TypeScript  Next.js  React  ML
       if (appState === S.MATERIALIZING && allSettled) appState = S.IDLE;
 
       if (isExploding) {
-        const avgSpeed = particles.reduce((s, p) => s + Math.hypot(p.vx, p.vy), 0) / particles.length;
-        if (avgSpeed < 0.8) {
+        explodeFrames++;
+        if (explodeFrames > 90) {
+          explodeFrames = 0;
           currentLayout = currentLayout === 'name' ? 'bio' : 'name';
           for (const p of particles) p.char = currentLayout === 'name' ? p.nameChar : p.bioChar;
           appState = S.REFORMING;
@@ -231,9 +233,9 @@ Python  TypeScript  Next.js  React  ML
       ctx.textBaseline = 'top';
       for (const p of particles) {
         if (p.alpha < 0.01) continue;
-        const pulse = 0.65 + 0.35 * Math.sin(t * 0.0015 + p.phase);
-        const brightness = Math.round(p.alpha * pulse * 255);
-        ctx.fillStyle = `rgb(0,${brightness},${Math.round(brightness * 0.25)})`;
+        const pulse = 0.7 + 0.3 * Math.sin(t * 0.0015 + p.phase);
+        const b = Math.round(p.alpha * pulse * 255);
+        ctx.fillStyle = `rgb(${Math.round(b * 0.4)},${b},${Math.round(b * 0.6)})`;
         ctx.fillText(p.char, p.x, p.y);
       }
     }
