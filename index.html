@@ -4,252 +4,128 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sai Kaung San</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0d0d0d; overflow: hidden; }
-    canvas { display: block; cursor: crosshair; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="c"></canvas>
-  <script type="module">
 
-    const canvas = document.getElementById('c');
-    const ctx = canvas.getContext('2d');
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-inner">
+      <span class="prompt">$ ./sai_kaung_san.sh</span>
+      <div id="typewriter-output"></div>
+      <div class="scroll-hint" id="scroll-hint">↓</div>
+    </div>
+  </section>
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  <!-- ABOUT -->
+  <section id="about" class="reveal">
+    <div class="terminal-card">
+      <div class="card-title">[ about.txt ]</div>
+      <div class="card-body">
+        <p>CS student @ Baruch College, NYC</p>
+        <p>GPA: 3.838 · Expected May 2027</p>
+        <br>
+        <p>Team Lead @ FQE Club</p>
+        <p class="indent">Short-Run Forex Pricing (eigenvalue decomposition)</p>
+        <p>Member @ MLDS Club</p>
+        <p class="indent">cuny-rag-assistant (RAG pipeline project)</p>
+        <br>
+        <p class="gold">★ Google × BASTA Innovation Challenge — Winner</p>
+      </div>
+    </div>
+  </section>
 
-    window.addEventListener('resize', () => {
-      canvas.width  = window.innerWidth;
-      canvas.height = window.innerHeight;
-      const W = canvas.width, H = canvas.height;
+  <!-- CONTACT -->
+  <section id="contact" class="reveal">
+    <div class="contact-links">
+      <a href="https://github.com/SaiChen22" target="_blank" class="cli-link">
+        <span class="arrow">&gt;</span> github.com/SaiChen22
+      </a>
+      <a href="https://www.linkedin.com/in/sai-kaung-san-6ab676327" target="_blank" class="cli-link">
+        <span class="arrow">&gt;</span> linkedin.com/in/sai-kaung-san-6ab676327
+      </a>
+      <a href="mailto:saikaungsanchen@gmail.com" class="cli-link">
+        <span class="arrow">&gt;</span> saikaungsanchen@gmail.com
+      </a>
+    </div>
+  </section>
 
-      const nt = buildNameTargets(W, H);
-      const bt = buildBioTargets(W, H);
+  <!-- PROJECTS -->
+  <section id="projects" class="reveal">
+    <h2 class="section-label">$ ls projects/</h2>
+    <div class="projects-grid">
 
-      particles.forEach((p, i) => {
-        p.nameX    = nt[i]?.x    ?? -200;
-        p.nameY    = nt[i]?.y    ?? -200;
-        p.nameChar = nt[i]?.char ?? ' ';
-        p.bioX     = bt[i]?.x    ?? -200;
-        p.bioY     = bt[i]?.y    ?? -200;
-        p.bioChar  = bt[i]?.char ?? ' ';
-      });
-    });
+      <div class="terminal-card project-card">
+        <div class="card-title">[ clinical-data-reconciliation-engine ]</div>
+        <div class="card-body">
+          <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">React 19</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">SQLite</span>
+          </div>
+          <p>AI-powered full-stack app reconciling conflicting EHR medication records. Hot-swappable LLM layer (Mock/GPT-4o/Claude/OpenAI), 24 automated tests, TypeScript–Pydantic schema parity.</p>
+          <a href="https://github.com/SaiChen22/smart_clinical_application" target="_blank" class="card-link">[→ github]</a>
+        </div>
+      </div>
 
-    const ASCII_CHARS = '#@%$*!|/\\^~+-=<>';
+      <div class="terminal-card project-card">
+        <div class="card-title">[ coinpulse ]</div>
+        <div class="card-body">
+          <div class="tags">
+            <span class="tag">Next.js 16</span>
+            <span class="tag">React 19</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">WebSocket</span>
+            <span class="tag">Tailwind</span>
+          </div>
+          <p>Real-time crypto tracking with live prices, candlestick charts, and fiat converter. Custom WebSocket hook with 5-min cache TTL and exponential backoff on HTTP 429.</p>
+          <a href="https://github.com/SaiChen22/CoinPulse" target="_blank" class="card-link">[→ github]</a>
+        </div>
+      </div>
 
-    function randomASCIIChar() {
-      return ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
-    }
+    </div>
+  </section>
 
-    // Renders "SAI KAUNG SAN" to an offscreen canvas at large size,
-    // samples bright pixels at a fixed grid stride, returns { x, y, char }[].
-    function buildNameTargets(W, H) {
-      const oc = document.createElement('canvas');
-      oc.width = W; oc.height = H;
-      const octx = oc.getContext('2d');
+  <!-- SKILLS -->
+  <section id="skills" class="reveal">
+    <h2 class="section-label">$ cat skills.txt</h2>
+    <div class="skills-grid">
+      <div class="skill-row">
+        <span class="skill-label">[Languages]</span>
+        <span class="tag">Python</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">C++</span>
+        <span class="tag">SQL</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-label">[Frameworks]</span>
+        <span class="tag">Next.js</span>
+        <span class="tag">React</span>
+        <span class="tag">FastAPI</span>
+        <span class="tag">Scikit-learn</span>
+        <span class="tag">Pandas</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-label">[Tools]</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Git</span>
+        <span class="tag">REST APIs</span>
+        <span class="tag">WebSockets</span>
+        <span class="tag">Linux</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-label">[Concepts]</span>
+        <span class="tag">Machine Learning</span>
+        <span class="tag">RESTful API Design</span>
+        <span class="tag">Data Modeling</span>
+        <span class="tag">Time-Series</span>
+      </div>
+    </div>
+  </section>
 
-      const fontSize = Math.min(W / 5, H / 2.5);
-      octx.fillStyle = '#000';
-      octx.fillRect(0, 0, W, H);
-      octx.fillStyle = '#fff';
-      octx.font = `bold ${fontSize}px 'Courier New', monospace`;
-      octx.textAlign = 'center';
-      octx.textBaseline = 'middle';
-      octx.fillText('SAI KAUNG SAN', W / 2, H / 2);
-
-      const data = octx.getImageData(0, 0, W, H).data;
-      const STEP = 14;
-      const candidates = [];
-
-      for (let y = STEP; y < H - STEP; y += STEP) {
-        for (let x = STEP; x < W - STEP; x += STEP) {
-          const idx = (y * W + x) * 4;
-          if (data[idx] > 128) candidates.push({ x, y, char: randomASCIIChar() });
-        }
-      }
-
-      // Subsample to cap at 350 particles
-      const MAX = 350;
-      if (candidates.length <= MAX) return candidates;
-      const skip = Math.ceil(candidates.length / MAX);
-      return candidates.filter((_, i) => i % skip === 0);
-    }
-
-    const S = { MATERIALIZING: 0, IDLE: 1, EXPLODING: 2, REFORMING: 3 };
-    let appState = S.MATERIALIZING;
-    let currentLayout = 'name';
-    let explodeFrames = 0;
-
-    const BIO_TEXT =
-`SAI KAUNG SAN
---------------------------------
-CS @ Baruch College  NYC  GPA 3.838
-Python  TypeScript  Next.js  React  ML
-
-[PROJECTS]
-> Clinical Data Reconciliation Engine
-> CoinPulse
-
-[AWARD]
-> Google x BASTA Innovation - Winner
-
-> github.com/SaiChen22
-> linkedin.com/in/sai-kaung-san
-> saikaungsanchen@gmail.com`;
-
-    // Lays out BIO_TEXT as monospace characters, one particle per character.
-    // Uses canvas measureText for char width — no external library needed.
-    function buildBioTargets(W, H) {
-      const FONT_SIZE = Math.max(11, Math.min(15, Math.floor(W / 90)));
-      const FONT = `${FONT_SIZE}px 'Courier New', monospace`;
-      const LINE_HEIGHT = Math.floor(FONT_SIZE * 1.6);
-      const PADDING = Math.floor(W * 0.08);
-
-      const oc = document.createElement('canvas');
-      const octx = oc.getContext('2d');
-      octx.font = FONT;
-      const charWidth = octx.measureText('M').width;
-      const charsPerLine = Math.floor((W - 2 * PADDING) / charWidth);
-
-      // Split BIO_TEXT on explicit newlines, then wrap long lines
-      const rawLines = BIO_TEXT.split('\n');
-      const lines = [];
-      for (const raw of rawLines) {
-        if (raw.length === 0) { lines.push(''); continue; }
-        for (let i = 0; i < raw.length; i += charsPerLine) {
-          lines.push(raw.slice(i, i + charsPerLine));
-        }
-      }
-
-      const totalHeight = lines.length * LINE_HEIGHT;
-      const startY = Math.floor((H - totalHeight) / 2);
-      const targets = [];
-
-      lines.forEach((line, li) => {
-        const y = startY + li * LINE_HEIGHT;
-        for (let i = 0; i < line.length; i++) {
-          targets.push({ x: PADDING + i * charWidth, y, char: line[i] });
-        }
-      });
-
-      return targets;
-    }
-
-    // Creates one particle per slot (count = max of name and bio target lengths).
-    // Each particle holds targets for both states so it can smoothly switch.
-    function buildParticles(nameTargets, bioTargets, W, H) {
-      const count = Math.max(nameTargets.length, bioTargets.length);
-      return Array.from({ length: count }, (_, i) => ({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        vx: 0, vy: 0,
-        nameX: nameTargets[i]?.x ?? -200,
-        nameY: nameTargets[i]?.y ?? -200,
-        nameChar: nameTargets[i]?.char ?? ' ',
-        bioX:  bioTargets[i]?.x  ?? -200,
-        bioY:  bioTargets[i]?.y  ?? -200,
-        bioChar:  bioTargets[i]?.char  ?? ' ',
-        char: nameTargets[i]?.char ?? ' ',
-        alpha: 0,
-        phase: Math.random() * Math.PI * 2,
-      }));
-    }
-
-    const nameTargets = buildNameTargets(canvas.width, canvas.height);
-    const bioTargets  = buildBioTargets(canvas.width, canvas.height);
-    let particles = buildParticles(nameTargets, bioTargets, canvas.width, canvas.height);
-
-    function explode(cx, cy) {
-      if (appState === S.EXPLODING) return;
-      appState = S.EXPLODING;
-      for (const p of particles) {
-        const dx = p.x - cx;
-        const dy = p.y - cy;
-        const dist = Math.max(1, Math.hypot(dx, dy));
-        const force = Math.min(35, 1000 / dist);
-        p.vx = (dx / dist) * force * (0.8 + Math.random() * 0.4);
-        p.vy = (dy / dist) * force * (0.8 + Math.random() * 0.4) - 3;
-      }
-    }
-
-    canvas.addEventListener('click', (e) => {
-      const r = canvas.getBoundingClientRect();
-      explode(e.clientX - r.left, e.clientY - r.top);
-    });
-
-    canvas.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      const r = canvas.getBoundingClientRect();
-      const t = e.changedTouches[0];
-      explode(t.clientX - r.left, t.clientY - r.top);
-    }, { passive: false });
-
-    function updateParticles() {
-      const isHoming    = appState === S.MATERIALIZING || appState === S.REFORMING;
-      const isExploding = appState === S.EXPLODING;
-      let allSettled = true;
-
-      for (const p of particles) {
-        if (isHoming || appState === S.IDLE) {
-          const tx = currentLayout === 'name' ? p.nameX : p.bioX;
-          const ty = currentLayout === 'name' ? p.nameY : p.bioY;
-          p.x += (tx - p.x) * 0.07;
-          p.y += (ty - p.y) * 0.07;
-          p.vx = 0; p.vy = 0;
-          p.alpha += (1 - p.alpha) * 0.04;
-          if (isHoming && Math.hypot(tx - p.x, ty - p.y) > 2) allSettled = false;
-        }
-
-        if (isExploding) {
-          p.vy += 0.18;    // gravity
-          p.vx *= 0.97;    // air friction
-          p.vy *= 0.97;
-          p.x  += p.vx;
-          p.y  += p.vy;
-        }
-      }
-
-      if (appState === S.MATERIALIZING && allSettled) appState = S.IDLE;
-
-      if (isExploding) {
-        explodeFrames++;
-        if (explodeFrames > 90) {
-          explodeFrames = 0;
-          currentLayout = currentLayout === 'name' ? 'bio' : 'name';
-          for (const p of particles) p.char = currentLayout === 'name' ? p.nameChar : p.bioChar;
-          appState = S.REFORMING;
-        }
-      }
-
-      if (appState === S.REFORMING && allSettled) appState = S.IDLE;
-    }
-
-    function drawParticles(t) {
-      ctx.font = `${Math.max(11, Math.min(15, Math.floor(canvas.width / 90)))}px 'Courier New', monospace`;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      for (const p of particles) {
-        if (p.alpha < 0.01) continue;
-        const pulse = 0.7 + 0.3 * Math.sin(t * 0.0015 + p.phase);
-        const b = Math.round(p.alpha * pulse * 255);
-        ctx.fillStyle = `rgb(${Math.round(b * 0.4)},${b},${Math.round(b * 0.6)})`;
-        ctx.fillText(p.char, p.x, p.y);
-      }
-    }
-
-    let t = 0;
-    function loop() {
-      t++;
-      ctx.fillStyle = '#0d0d0d';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      updateParticles();
-      drawParticles(t);
-      requestAnimationFrame(loop);
-    }
-    loop();
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>
