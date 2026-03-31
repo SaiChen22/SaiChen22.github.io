@@ -25,6 +25,46 @@
     resize();
     window.addEventListener('resize', resize);
 
+    const ASCII_CHARS = '#@%$*!|/\\^~+-=<>';
+
+    function randomASCIIChar() {
+      return ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
+    }
+
+    // Renders "SAI KAUNG SAN" to an offscreen canvas at large size,
+    // samples bright pixels at a fixed grid stride, returns { x, y, char }[].
+    function buildNameTargets(W, H) {
+      const oc = document.createElement('canvas');
+      oc.width = W; oc.height = H;
+      const octx = oc.getContext('2d');
+
+      const fontSize = Math.min(W / 5, H / 2.5);
+      octx.fillStyle = '#000';
+      octx.fillRect(0, 0, W, H);
+      octx.fillStyle = '#fff';
+      octx.font = `bold ${fontSize}px 'Courier New', monospace`;
+      octx.textAlign = 'center';
+      octx.textBaseline = 'middle';
+      octx.fillText('SAI KAUNG SAN', W / 2, H / 2);
+
+      const data = octx.getImageData(0, 0, W, H).data;
+      const STEP = 14;
+      const candidates = [];
+
+      for (let y = STEP; y < H - STEP; y += STEP) {
+        for (let x = STEP; x < W - STEP; x += STEP) {
+          const idx = (y * W + x) * 4;
+          if (data[idx] > 128) candidates.push({ x, y, char: randomASCIIChar() });
+        }
+      }
+
+      // Subsample to cap at 350 particles
+      const MAX = 350;
+      if (candidates.length <= MAX) return candidates;
+      const skip = Math.ceil(candidates.length / MAX);
+      return candidates.filter((_, i) => i % skip === 0);
+    }
+
     function loop() {
       ctx.fillStyle = '#0d0d0d';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
