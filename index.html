@@ -145,6 +145,45 @@ Python  TypeScript  Next.js  React  ML
     const bioTargets  = buildBioTargets(canvas.width, canvas.height);
     let particles = buildParticles(nameTargets, bioTargets, canvas.width, canvas.height);
 
+    function updateParticles() {
+      const isHoming    = appState === S.MATERIALIZING || appState === S.REFORMING;
+      const isExploding = appState === S.EXPLODING;
+      let allSettled = true;
+
+      for (const p of particles) {
+        if (isHoming || appState === S.IDLE) {
+          const tx = currentLayout === 'name' ? p.nameX : p.bioX;
+          const ty = currentLayout === 'name' ? p.nameY : p.bioY;
+          p.x += (tx - p.x) * 0.07;
+          p.y += (ty - p.y) * 0.07;
+          p.vx = 0; p.vy = 0;
+          p.alpha += (1 - p.alpha) * 0.04;
+          if (isHoming && Math.hypot(tx - p.x, ty - p.y) > 2) allSettled = false;
+        }
+
+        if (isExploding) {
+          p.vy += 0.18;    // gravity
+          p.vx *= 0.97;    // air friction
+          p.vy *= 0.97;
+          p.x  += p.vx;
+          p.y  += p.vy;
+        }
+      }
+
+      if (appState === S.MATERIALIZING && allSettled) appState = S.IDLE;
+
+      if (isExploding) {
+        const avgSpeed = particles.reduce((s, p) => s + Math.hypot(p.vx, p.vy), 0) / particles.length;
+        if (avgSpeed < 0.8) {
+          currentLayout = currentLayout === 'name' ? 'bio' : 'name';
+          for (const p of particles) p.char = currentLayout === 'name' ? p.nameChar : p.bioChar;
+          appState = S.REFORMING;
+        }
+      }
+
+      if (appState === S.REFORMING && allSettled) appState = S.IDLE;
+    }
+
     function drawParticles(t) {
       ctx.font = `${Math.max(11, Math.min(15, Math.floor(canvas.width / 90)))}px 'Courier New', monospace`;
       ctx.textAlign = 'left';
@@ -163,6 +202,7 @@ Python  TypeScript  Next.js  React  ML
       t++;
       ctx.fillStyle = '#0d0d0d';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      updateParticles();
       drawParticles(t);
       requestAnimationFrame(loop);
     }
