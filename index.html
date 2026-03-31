@@ -145,6 +145,31 @@ Python  TypeScript  Next.js  React  ML
     const bioTargets  = buildBioTargets(canvas.width, canvas.height);
     let particles = buildParticles(nameTargets, bioTargets, canvas.width, canvas.height);
 
+    function explode(cx, cy) {
+      if (appState === S.EXPLODING) return;
+      appState = S.EXPLODING;
+      for (const p of particles) {
+        const dx = p.x - cx;
+        const dy = p.y - cy;
+        const dist = Math.max(1, Math.hypot(dx, dy));
+        const force = Math.min(35, 1000 / dist);
+        p.vx = (dx / dist) * force * (0.8 + Math.random() * 0.4);
+        p.vy = (dy / dist) * force * (0.8 + Math.random() * 0.4) - 3;
+      }
+    }
+
+    canvas.addEventListener('click', (e) => {
+      const r = canvas.getBoundingClientRect();
+      explode(e.clientX - r.left, e.clientY - r.top);
+    });
+
+    canvas.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      const r = canvas.getBoundingClientRect();
+      const t = e.changedTouches[0];
+      explode(t.clientX - r.left, t.clientY - r.top);
+    }, { passive: false });
+
     function updateParticles() {
       const isHoming    = appState === S.MATERIALIZING || appState === S.REFORMING;
       const isExploding = appState === S.EXPLODING;
