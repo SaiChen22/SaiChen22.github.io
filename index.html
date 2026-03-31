@@ -13,7 +13,6 @@
 <body>
   <canvas id="c"></canvas>
   <script type="module">
-    import { prepare, layoutWithLines } from 'https://esm.sh/@chenglou/pretext@0.0.2';
 
     const canvas = document.getElementById('c');
     const ctx = canvas.getContext('2d');
@@ -100,35 +99,38 @@ Python  TypeScript  Next.js  React  ML
 > linkedin.com/in/sai-kaung-san
 > saikaungsanchen@gmail.com`;
 
-    // Uses Pretext layoutWithLines to wrap BIO_TEXT at the canvas width,
-    // then maps every character to a precise (x, y) pixel coordinate.
+    // Lays out BIO_TEXT as monospace characters, one particle per character.
+    // Uses canvas measureText for char width — no external library needed.
     function buildBioTargets(W, H) {
       const FONT_SIZE = Math.max(11, Math.min(15, Math.floor(W / 90)));
       const FONT = `${FONT_SIZE}px 'Courier New', monospace`;
       const LINE_HEIGHT = Math.floor(FONT_SIZE * 1.6);
       const PADDING = Math.floor(W * 0.08);
-      const maxWidth = W - 2 * PADDING;
 
-      // Measure monospace char width once using canvas (all chars same width)
       const oc = document.createElement('canvas');
       const octx = oc.getContext('2d');
       octx.font = FONT;
       const charWidth = octx.measureText('M').width;
+      const charsPerLine = Math.floor((W - 2 * PADDING) / charWidth);
 
-      const prepared = prepare(BIO_TEXT, FONT);
-      const { lines, height } = layoutWithLines(prepared, maxWidth, LINE_HEIGHT);
+      // Split BIO_TEXT on explicit newlines, then wrap long lines
+      const rawLines = BIO_TEXT.split('\n');
+      const lines = [];
+      for (const raw of rawLines) {
+        if (raw.length === 0) { lines.push(''); continue; }
+        for (let i = 0; i < raw.length; i += charsPerLine) {
+          lines.push(raw.slice(i, i + charsPerLine));
+        }
+      }
 
-      const startY = Math.floor((H - height) / 2);
+      const totalHeight = lines.length * LINE_HEIGHT;
+      const startY = Math.floor((H - totalHeight) / 2);
       const targets = [];
 
       lines.forEach((line, li) => {
         const y = startY + li * LINE_HEIGHT;
-        for (let i = 0; i < line.text.length; i++) {
-          targets.push({
-            x: PADDING + i * charWidth,
-            y,
-            char: line.text[i],
-          });
+        for (let i = 0; i < line.length; i++) {
+          targets.push({ x: PADDING + i * charWidth, y, char: line[i] });
         }
       });
 
