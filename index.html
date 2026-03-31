@@ -18,12 +18,26 @@
     const canvas = document.getElementById('c');
     const ctx = canvas.getContext('2d');
 
-    function resize() {
-      canvas.width = window.innerWidth;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      canvas.width  = window.innerWidth;
       canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
+      const W = canvas.width, H = canvas.height;
+
+      const nt = buildNameTargets(W, H);
+      const bt = buildBioTargets(W, H);
+
+      particles.forEach((p, i) => {
+        p.nameX    = nt[i]?.x    ?? -200;
+        p.nameY    = nt[i]?.y    ?? -200;
+        p.nameChar = nt[i]?.char ?? ' ';
+        p.bioX     = bt[i]?.x    ?? -200;
+        p.bioY     = bt[i]?.y    ?? -200;
+        p.bioChar  = bt[i]?.char ?? ' ';
+      });
+    });
 
     const ASCII_CHARS = '#@%$*!|/\\^~+-=<>';
 
