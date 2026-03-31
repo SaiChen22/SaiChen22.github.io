@@ -1,0 +1,358 @@
+/* ============================================================
+   TERMINAL PORTFOLIO — style.css
+   ============================================================ */
+
+/* ── CSS custom properties ──────────────────────────────────── */
+:root {
+  --bg:        #0d0d0d;
+  --green:     #00ff41;
+  --green-dim: #00a832;
+  --text:      #c8c8c8;
+  --card-bg:   #111111;
+  --gold:      #ffd700;
+  --font:      'Courier New', Courier, monospace;
+  --max-w:     900px;
+}
+
+/* ── 1. CSS reset + base ────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── 2. Scanline overlay ────────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.08) 3px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  z-index: 9999;
+}
+
+/* ── 3. Custom scrollbar ────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--green-dim);
+  border-radius: 2px;
+}
+
+/* ── 4. Typography ──────────────────────────────────────────── */
+a {
+  color: var(--green-dim);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+a:hover {
+  color: var(--green);
+}
+
+.gold {
+  color: var(--gold);
+}
+
+.indent {
+  padding-left: 2ch;
+}
+
+/* ── 5. Layout wrapper ──────────────────────────────────────── */
+section {
+  padding: 80px 24px;
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+#hero {
+  max-width: 100%;
+  padding: 0;
+}
+
+/* ── 6. Section labels ──────────────────────────────────────── */
+.section-label {
+  color: var(--green-dim);
+  font-size: 0.9rem;
+  font-weight: normal;
+  margin-bottom: 32px;
+  letter-spacing: 0.05em;
+}
+
+/* ── 7. Scroll reveal ───────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── 8. Hero ────────────────────────────────────────────────── */
+#hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-inner {
+  padding: 24px;
+  width: 100%;
+  max-width: var(--max-w);
+}
+
+.prompt {
+  display: block;
+  color: var(--green);
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  margin-bottom: 24px;
+}
+
+#typewriter-output {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--text);
+  min-height: 5em;
+}
+
+.line {
+  display: block;
+  white-space: pre;
+}
+
+.line::before {
+  content: '> ';
+  color: var(--green-dim);
+}
+
+/* Cursor blink keyframes */
+@keyframes blink {
+  0%,
+  100% { opacity: 1; }
+  50%   { opacity: 0; }
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.6ch;
+  height: 1.1em;
+  background: var(--green);
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+/* Float keyframes */
+@keyframes float {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(8px); }
+  100% { transform: translateY(0); }
+}
+
+.scroll-hint {
+  margin-top: 60px;
+  color: var(--green-dim);
+  font-size: 1.4rem;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  animation: float 2s ease-in-out infinite;
+}
+
+.scroll-hint.visible {
+  opacity: 1;
+}
+
+/* ── 9. Terminal card ───────────────────────────────────────── */
+.terminal-card {
+  border: 1px solid var(--green-dim);
+  background: var(--card-bg);
+  border-radius: 2px;
+}
+
+.card-title {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--green-dim);
+  color: var(--green);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+
+.card-body {
+  padding: 20px 16px;
+  color: var(--text);
+}
+
+.card-body p {
+  margin-bottom: 0.3rem;
+}
+
+/* ── 10. About ──────────────────────────────────────────────── */
+#about .terminal-card {
+  max-width: 640px;
+}
+
+/* ── 11. Contact ────────────────────────────────────────────── */
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Link-blink keyframe for hover feedback */
+@keyframes link-blink {
+  0%   { opacity: 1; }
+  50%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.cli-link {
+  display: inline-flex;
+  gap: 8px;
+  color: var(--text);
+  transition: color 0.15s;
+  font-size: 0.95rem;
+}
+
+.cli-link .arrow {
+  color: var(--green-dim);
+  transition: color 0.15s;
+  display: inline-block;
+  width: 1.2ch;
+}
+
+.cli-link:hover {
+  color: var(--green);
+  animation: link-blink 0.15s step-end 1;
+}
+
+/* ── 12. Projects grid ──────────────────────────────────────── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.project-card .card-body p {
+  margin: 12px 0;
+  font-size: 0.9rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.tag {
+  background: transparent;
+  border: 1px solid var(--green-dim);
+  color: var(--green-dim);
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 0.78rem;
+  font-family: var(--font);
+  transition: background 0.15s, color 0.15s;
+}
+
+.tag:hover {
+  background: var(--green);
+  color: var(--bg);
+  border-color: var(--green);
+}
+
+.card-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--green-dim);
+  font-size: 0.88rem;
+  transition: color 0.15s;
+}
+
+.card-link:hover {
+  color: var(--green);
+}
+
+/* ── 13. Skills ─────────────────────────────────────────────── */
+.skills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skill-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-label {
+  color: var(--green-dim);
+  font-size: 0.82rem;
+  min-width: 14ch;
+  flex-shrink: 0;
+}
+
+/* ── 14. Mobile responsive ──────────────────────────────────── */
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 13px;
+  }
+
+  section {
+    padding: 60px 16px;
+  }
+
+  .prompt {
+    font-size: 1rem;
+  }
+
+  #typewriter-output {
+    font-size: 1rem;
+  }
+
+  .skill-label {
+    min-width: 100%;
+  }
+
+  .skill-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
