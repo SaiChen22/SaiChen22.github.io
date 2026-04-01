@@ -356,3 +356,20 @@ section {
     align-items: flex-start;
   }
 }
+
+/* ── ASCII pet ────────────────────────────────── */
+#pet {
+  position: fixed;
+  bottom: 8px;
+  left: 0;
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1;
+  white-space: pre;
+  text-shadow: 0 0 6px var(--green);
+  pointer-events: none;
+  z-index: 10000;
+  will-change: transform;
+  user-select: none;
+}
